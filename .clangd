@@ -1,0 +1,11 @@
+CompileFlags:
+  Compiler: gcc
+  BuiltinHeaders: QueryDriver
+  Add:
+    - -Wall
+  Remove:
+    - -fmodule-ts
+    - -fmodules-ts
+    - -fmodule-mapper=*
+    - -fdeps-format=*
+
