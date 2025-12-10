@@ -6,6 +6,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARDS_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# not the "modern cmake" way, but it makes helper functions available for every target.
+include_directories(include)
+
 add_subdirectory(puzzles)
 
 if (CMAKE_EXPORT_COMPILE_COMMANDS)
