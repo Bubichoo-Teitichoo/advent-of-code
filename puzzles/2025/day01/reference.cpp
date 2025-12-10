@@ -1,17 +1,11 @@
 #include <cassert>
-#include <charconv>
 #include <cmath>
 #include <format>
 #include <iostream>
 #include <string>
 #include <vector>
 
-int str2int(std::string_view str) {
-    int number{0};
-    const auto [ptr, ec] = std::from_chars(std::begin(str), std::end(str), number);
-    assert(ec == std::errc());
-    return number;
-}
+#include "aoc.hpp"
 
 int main(int argc, char* argv[]) {
     std::vector<std::string> args{argv + 1, argv + argc};
@@ -33,8 +27,8 @@ int main(int argc, char* argv[]) {
         const int direction{arg[0] == 'L' ? -1 : 1};
         const int clicks{(direction * str2int(arg.substr(1)))};
 
-        // std::cout << std::format("Dial {} - Clicks {} - Zeros {} - Zero Pass-by {}\n", position, clicks, zero_turns,
-        //                          zero_passes - zero_turns);
+        // std::cout << std::format("Dial {:>5} - Clicks {:>4} - Zeros hits {:>3} - Zero pass-bys {:>4}\n", position,
+        //                          clicks, zero_turns, zero_passes - zero_turns);
 
         // Solution 5782
         for (int i{0}; i < std::abs(clicks); i++) {
@@ -56,5 +50,8 @@ int main(int argc, char* argv[]) {
 
     std::cout << std::format("The password for stage 1 is '{}'\n", zero_turns);
     std::cout << std::format("The password for stage 2 is '{}'\n", zero_passes);
+
+    assert(zero_turns == 962);
+    assert(zero_passes == 5782);
     return 0;
 }
