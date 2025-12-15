@@ -24,7 +24,7 @@ int main(int argc, char* argv[]) {
         assert(arg[0] == 'L' or arg[0] == 'R' && "First character of a rotation must be a either 'L' or 'R'");
 
         const int direction{arg[0] == 'L' ? -1 : 1};
-        const int clicks{direction * str2int(arg.substr(1))};
+        const int clicks{direction * str2int<int>(arg.substr(1))};
 
         // std::cout << std::format("Dial {:>5} - Clicks {:>4} - Zeros hits {:>3} - Zero pass-bys {:>4}\n", position,
         //                          clicks, zero_hits, zero_pass_by);
