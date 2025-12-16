@@ -5,6 +5,7 @@ set(AOC_YEAR "2025")
 
 option(AOC_BUILD_2025_DAY01 "Build day 1 of 2025s AoC puzzles." ON)
 option(AOC_BUILD_2025_DAY02 "Build day 2 of 2025s AoC puzzles." ON)
+option(AOC_BUILD_2025_DAY03 "Build day 3 of 2025s AoC puzzles." ON)
 
 if (AOC_BUILD_2025_DAY01)
     add_subdirectory(day01)
@@ -12,4 +13,8 @@ endif()
 
 if (AOC_BUILD_2025_DAY02)
     add_subdirectory(day02)
+endif()
+
+if (AOC_BUILD_2025_DAY03)
+    add_subdirectory(day03)
 endif()
