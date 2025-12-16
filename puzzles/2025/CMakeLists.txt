@@ -1,5 +1,7 @@
+cmake_minimum_required(VERSION 3.30)
+project("Advent of Code 2025" LANGUAGES CXX)
 
-project("Advent of Code 2025")
+set(AOC_YEAR "2025")
 
 option(AOC_BUILD_2025_DAY01 "Build day 1 of 2025s AoC puzzles." ON)
 option(AOC_BUILD_2025_DAY02 "Build day 2 of 2025s AoC puzzles." ON)
@@ -10,5 +12,5 @@ if (AOC_BUILD_2025_DAY01)
 endif()
 
 if (AOC_BUILD_2025_DAY02)
-    add_executable("aoc-2025-day02-reference" day02/reference.cpp)
+    add_subdirectory(day02)
 endif()
