@@ -7,7 +7,7 @@
 #include <string_view>
 
 template <typename T>
-inline auto str2int(std::string_view string) -> T {
+auto str2int(std::string_view string) -> T {
     T number{0};
     const auto [ptr, ec] = std::from_chars(std::begin(string), std::end(string), number);
     assert(ec == std::errc());
