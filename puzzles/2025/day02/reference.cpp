@@ -9,17 +9,6 @@
 
 #include "aoc.hpp"
 
-template <typename T>
-inline T repeat(T number, T count) {
-    const T digits{static_cast<T>(1 + std::log10(number))};
-    const T multiplier{static_cast<T>(std::pow(10, digits))};
-    T result{0};
-    for (T i{0}; i < count; i++) {
-        result = (result * multiplier) + number;
-    }
-    return result;
-}
-
 using u64 = uint64_t;
 
 int main(int argc, char* argv[]) {
