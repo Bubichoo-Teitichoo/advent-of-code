@@ -6,5 +6,5 @@ if (NOT DEFINED AOC_YEAR)
     message(FATAL_ERROR "'AOC_YEAR' not defined")
 endif()
 
-add_executable("aoc-2025-day01-reference" reference.cpp)
-add_executable("aoc-2025-day01-solution" solution.cpp)
+add_executable("${AOC_YEAR}-${AOC_DAY}" solution.cpp)
+set_target_properties("${AOC_YEAR}-${AOC_DAY}" PROPERTIES OUTPUT_NAME solution)

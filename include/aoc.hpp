@@ -3,10 +3,28 @@
 
 #include <cassert>
 #include <charconv>
+#include <chrono>
 #include <cmath>
+#include <format>
+#include <iostream>
 #include <ranges>
 #include <string_view>
 #include <vector>
+
+#define BENCH(fn_call, cycles)                                                              \
+    do {                                                                                    \
+        const auto start{std::chrono::high_resolution_clock::now()};                        \
+        for (const auto _ : std::views::iota(0, cycles)) {                                  \
+            fn_call;                                                                        \
+        }                                                                                   \
+        const auto end{std::chrono::high_resolution_clock::now()};                          \
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start); \
+        std::cout << std::format("'{}' executed {} time in {} ({} per cycle)\n",            \
+                                 #fn_call,                                                  \
+                                 cycles,                                                    \
+                                 duration,                                                  \
+                                 duration / cycles);                                        \
+    } while (0)
 
 constexpr auto view2string = [](auto&& view) {
     return std::string{std::begin(view), std::end(view)};

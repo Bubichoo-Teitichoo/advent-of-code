@@ -3,31 +3,60 @@
 #include <format>
 #include <iostream>
 #include <string>
+#include <tuple>
 #include <vector>
 
 #include "aoc.hpp"
+#include "aoc_main.hpp"
 
-int main(int argc, char* argv[]) {
-    std::vector<std::string> args{argv + 1, argv + argc};
-    if (args[0] == "--") {
-        std::cout << "Reading inputs from stdin\n";
-        args.clear();
-        for (std::string line; std::getline(std::cin, line);) {
-            args.push_back(std::move(line));
-        }
-    }
+std::tuple<int, int> reference(const std::vector<std::string>& input);
+std::tuple<int, int> optimized(const std::vector<std::string>& input);
 
+void solve(const std::vector<std::string>& input) {
+    const auto reference_solution{reference(input)};
+    const auto optimized_solution{optimized(input)};
+
+    assert(reference_solution == optimized_solution && "Results of reference and optimized solutions do not match.");
+
+    std::cout << std::format("The password for stage 1 is '{}'\n", std::get<0>(optimized_solution));
+    std::cout << std::format("The password for stage 2 is '{}'\n", std::get<1>(optimized_solution));
+
+    BENCH(reference(input), 5000);
+    BENCH(optimized(input), 5000);
+}
+
+std::tuple<int, int> reference(const std::vector<std::string>& input) {
     int position{50};
     int zero_hits{0};
     int zero_pass_by{0};
-    for (const auto& arg : args) {
-        assert(arg[0] == 'L' or arg[0] == 'R' && "First character of a rotation must be a either 'L' or 'R'");
+    for (const auto& rotation : input) {
+        assert(rotation[0] == 'L' or rotation[0] == 'R' && "First character of a rotation must be a either 'L' or 'R'");
 
-        const int direction{arg[0] == 'L' ? -1 : 1};
-        const int clicks{direction * str2int<int>(arg.substr(1))};
+        const int direction{rotation[0] == 'L' ? -1 : 1};
+        const int clicks{(direction * str2int<int>(rotation.substr(1)))};
 
-        // std::cout << std::format("Dial {:>5} - Clicks {:>4} - Zeros hits {:>3} - Zero pass-bys {:>4}\n", position,
-        //                          clicks, zero_hits, zero_pass_by);
+        for (int i{0}; i < std::abs(clicks); i++) {
+            if (i and position == 0) {
+                zero_pass_by++;
+            }
+            position = (100 + (position + static_cast<int>(std::copysign(1, clicks)))) % 100;
+        }
+        if (position == 0) {
+            zero_hits += 1;
+        }
+    }
+    return {zero_hits, zero_hits + zero_pass_by};
+}
+
+std::tuple<int, int> optimized(const std::vector<std::string>& input) {
+    int position{50};
+    int zero_hits{0};
+    int zero_pass_by{0};
+    for (const auto& rotation : input) {
+        assert(rotation[0] == 'L' or rotation[0] == 'R' && "First character of a rotation must be a either 'L' or 'R'");
+
+        const int direction{rotation[0] == 'L' ? -1 : 1};
+        const int clicks{direction * str2int<int>(rotation.substr(1))};
 
         const int position_next{clicks + position};
         const bool start_on_zero{position % 100 == 0};
@@ -55,10 +84,5 @@ int main(int argc, char* argv[]) {
         position = position_next;
     }
 
-    std::cout << std::format("The password for stage 1 is '{}'\n", zero_hits);
-    std::cout << std::format("The password for stage 2 is '{}'\n", zero_hits + zero_pass_by);
-
-    assert(zero_hits == 962);
-    assert(zero_hits + zero_pass_by == 5782);
-    return 0;
+    return {zero_hits, zero_hits + zero_pass_by};
 }
