@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 3.30)
+project("Advent of Code 2025/01" LANGUAGES CXX)
+
+set(AOC_DAY "01")
+if (NOT DEFINED AOC_YEAR)
+    message(FATAL_ERROR "'AOC_YEAR' not defined")
+endif()
+
+add_executable("aoc-2025-day01-reference" reference.cpp)
+add_executable("aoc-2025-day01-solution" solution.cpp)
