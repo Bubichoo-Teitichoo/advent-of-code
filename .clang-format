@@ -2,4 +2,19 @@
 BasedOnStyle: Google
 ColumnLimit: 120
 IndentWidth: 4
+AccessModifierOffset: -4
 UseTab: Never
+BreakBeforeBinaryOperators: All
+AlignOperands: Align
+AllowAllArgumentsOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowAllConstructorInitializersOnNextLine: false
+AllowShortLambdasOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortBlocksOnASingleLine: Empty
+BinPackArguments: false
+BinPackParameters: OnePerLine
+BraceWrapping:
+  BeforeCatch: true
+  BeforeElse: true
+
