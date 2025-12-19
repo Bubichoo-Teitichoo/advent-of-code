@@ -32,16 +32,22 @@ void solve(const std::vector<std::string>& input) {
 std::tuple<u64, u64> reference(const std::vector<std::string>& input) {
     u64 joltages{0};
     for (const auto& line : input) {
-        auto bank_view{line | std::views::transform(char2num)};
-        const std::vector<u64> bank{std::begin(bank_view), std::end(bank_view)};
+        auto bank{line | std::views::transform(char2num)};
 
-        std::vector<u64> permutations{};
-        for (size_t idx0{0}; idx0 < bank.size() - 1; idx0++) {
-            for (size_t idx1{idx0 + 1}; idx1 < bank.size(); idx1++) {
-                permutations.push_back(bank[idx0] * 10 + bank[idx1]);
+        u64 joltage{0};
+        // a sliding window approach,
+        // where each window starts at x+1 where x is the previous window.
+        // The windows must not overlap or overrun each other.
+        // For part 1 we have 2 windows, so a simple nested loop does the trick.
+        // Hint: In debug mode, this is painfully slow,
+        // but with compiler optimizations enabled this becomes blazingly fast.
+        // Almost as fast as the "optimized" solution.
+        for (auto idx0{bank.begin()}; idx0 < bank.begin() - 1; idx0++) {
+            for (auto idx1{idx0 + 1}; idx1 < bank.end(); idx1++) {
+                joltage = std::max(joltage, *idx0 * 10 + *idx1);
             }
         }
-        joltages += *std::max_element(permutations.begin(), permutations.end());
+        joltages += joltage;
     }
     return {joltages, 0};
 }
