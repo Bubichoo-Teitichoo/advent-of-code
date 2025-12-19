@@ -1,17 +1,20 @@
 #include <cassert>
+#include <cstdint>
 #include <ranges>
 #include <tuple>
 
 #include "aoc.hpp"
 #include "aoc_main.hpp"
 
-constexpr unsigned char2num(char digit) {
+using u64 = uint64_t;
+
+constexpr u64 char2num(char digit) {
     assert('0' <= digit and digit <= '9');
     return digit - 0x30;
 }
 
-std::tuple<unsigned, unsigned> reference(const std::vector<std::string>& input);
-std::tuple<unsigned, unsigned> optimized(const std::vector<std::string>& input);
+std::tuple<u64, u64> reference(const std::vector<std::string>& input);
+std::tuple<u64, u64> optimized(const std::vector<std::string>& input);
 
 void solve(const std::vector<std::string>& input) {
     const auto reference_solution{reference(input)};
@@ -26,13 +29,13 @@ void solve(const std::vector<std::string>& input) {
     BENCH(optimized(input), 1000);
 }
 
-std::tuple<unsigned, unsigned> reference(const std::vector<std::string>& input) {
-    unsigned joltages{0};
+std::tuple<u64, u64> reference(const std::vector<std::string>& input) {
+    u64 joltages{0};
     for (const auto& line : input) {
         auto bank_view{line | std::views::transform(char2num)};
-        const std::vector<unsigned> bank{std::begin(bank_view), std::end(bank_view)};
+        const std::vector<u64> bank{std::begin(bank_view), std::end(bank_view)};
 
-        std::vector<unsigned> permutations{};
+        std::vector<u64> permutations{};
         for (size_t idx0{0}; idx0 < bank.size() - 1; idx0++) {
             for (size_t idx1{idx0 + 1}; idx1 < bank.size(); idx1++) {
                 permutations.push_back(bank[idx0] * 10 + bank[idx1]);
@@ -43,8 +46,8 @@ std::tuple<unsigned, unsigned> reference(const std::vector<std::string>& input) 
     return {joltages, 0};
 }
 
-std::tuple<unsigned, unsigned> optimized(const std::vector<std::string>& input) {
-    unsigned joltages{0};
+std::tuple<u64, u64> optimized(const std::vector<std::string>& input) {
+    u64 joltages{0};
     for (const auto& line : input) {
         auto bank{line | std::views::transform(char2num)};
 
