@@ -26,6 +26,25 @@
                                  duration / cycles);                                        \
     } while (0)
 
+#define BENCH2(fn_call, timeout)                                                               \
+    do {                                                                                       \
+        using clock = std::chrono::high_resolution_clock;                                      \
+        const auto start{clock::now()};                                                        \
+        std::chrono::duration<double> duration;                                                \
+        size_t cycles{0};                                                                      \
+        for (;; cycles++) {                                                                    \
+            fn_call;                                                                           \
+            duration = std::chrono::duration_cast<std::chrono::seconds>(clock::now() - start); \
+            if (duration >= std::chrono::seconds(timeout)) {                                   \
+                break;                                                                         \
+            }                                                                                  \
+        }                                                                                      \
+        std::cout << std::format("'{}' executed {} times in {} ({}/cycle)\n",                  \
+                                 #fn_call,                                                     \
+                                 cycles,                                                       \
+                                 duration,                                                     \
+                                 duration / cycles);                                           \
+    } while (0)
 constexpr auto view2string = [](auto&& view) {
     return std::string{std::begin(view), std::end(view)};
 };
